@@ -58,9 +58,9 @@ Downloading
 django-transfer provides an HttpResponse subclass that handles downloads
 triggered via response header. The actual header and format are handled by
 this class. TransferHttpResponse accepts a path, and handles the transfer.
-When ``settings.DEBUG == True`` the path is sent directly to the client,
-this allows the Django development server to function as normal without
-changing your application code.
+When ``settings.TRANSFER_SERVER_DISABLED == False`` the path is sent directly
+to the client, this allows the Django development server to function as normal
+without changing your application code.
 
 The timeline of events for a download looks like the following.
 
@@ -111,12 +111,12 @@ them by configuring the mappings.
         '/mnt/shared/downloads': '/downloads',
     }
 
-Once the mapping is configured, you can use absolute paths, which will
-be converted to the locations required by nginx. If you later switch to
-a different server (apache or lighttpd), these absolute paths will continue
-to function without changing your code. Similarly, when ``settings.DEBUG ==
-True``, absolute paths will be required so that the development server can
-send the file directly.
+Once the mapping is configured, you can use absolute paths, which will be
+converted to the locations required by nginx. If you later switch to a
+different server (apache or lighttpd), these absolute paths will continue to
+function without changing your code. Similarly, when
+``settings.TRANSFER_SERVER_DISABLED == False``, absolute paths will be
+required so that the development server can send the file directly.
 
 If you do not configure any mappings, and you are using server type
 ``'nginx'``, an ImproperlyConfigured exception will be raised. Mappings
@@ -238,7 +238,7 @@ Development / Debugging
 When ``settings.DEBUG == True``, ``TransferHttpResponse`` will transfer the
 file directly which suitable for use with the Django development server.
 The ``TransferMiddleware`` always supports regular file uploads, so it
-will also function properly when ``settings.DEBUG == True``.
+will also function properly when ``settings.TRANSFER_SERVER_ENABLED == False``.
 
 Non-ASCII File Names
 --------------------
